@@ -1,0 +1,6 @@
+@echo off
+echo Starting MongoDB...
+start mongod
+timeout /t 5
+echo Starting Backend Server...
+npm start
