@@ -155,10 +155,10 @@ const HomePage = () => {
           <div className="footer-section">
             <h4>Connect With Us</h4>
             <div className="social-links">
-              <a href="#" className="social-link">Facebook</a>
-              <a href="#" className="social-link">Instagram</a>
-              <a href="#" className="social-link">LinkedIn</a>
-              <a href="#" className="social-link">Twitter</a>
+              <a href="https://www.facebook.com/excelmec/" className="social-link" target="_blank" rel="noopener noreferrer">f</a>
+              <a href="https://www.instagram.com/excelmec/" className="social-link" target="_blank" rel="noopener noreferrer">@</a>
+              <a href="https://www.linkedin.com/company/excelmec/posts/?feedView=all" className="social-link" target="_blank" rel="noopener noreferrer">in</a>
+              <a href="https://x.com/excelmec?t=hgaB719EfkRD0YZz3cKHxA&s=09" className="social-link" target="_blank" rel="noopener noreferrer">#</a>
             </div>
           </div>
         </div>
