@@ -1,0 +1,129 @@
+/* Login.css */
+
+/* Full page container */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5; /* Light background color */
+}
+
+/* Card styling */
+.login-card {
+  background-color: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  text-align: center;
+  width: 350px; /* Set card width */
+  animation: fadeIn 0.5s ease-in-out; /* Subtle fade-in animation */
+}
+
+/* Title */
+.login-card h1 {
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: #333;
+}
+
+/* Input fields */
+.login-card input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Submit button */
+.login-card button {
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-card button:hover {
+  background-color: #e5533c;
+}
+
+/* Toggle between login and signup */
+.toggle-auth {
+  color: #ff6347;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.toggle-auth:hover {
+  color: #e5533c;
+}
+
+/* Demo credentials panel */
+.demo-credentials {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: left;
+  font-size: 12px;
+}
+
+.demo-credentials h3 {
+  color: #495057;
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  text-align: center;
+}
+
+.demo-credentials h4 {
+  color: #6c757d;
+  margin: 10px 0 5px 0;
+  font-size: 13px;
+}
+
+.credentials-section {
+  margin-bottom: 15px;
+}
+
+.credentials-section p {
+  margin: 2px 0;
+  color: #495057;
+}
+
+.coordinator-info {
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.coordinator-info p {
+  margin: 2px 0;
+}
+
+.coordinator-info strong {
+  color: #28a745;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
