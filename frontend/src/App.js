@@ -10,6 +10,7 @@ import ProtectedRoute from './Components/ProtectedRoute';
 import RoleBasedRoute from './Components/RoleBasedRoute';
 import RoleBasedRedirect from './Components/RoleBasedRedirect';
 import Navbar from './Components/Navbar';
+import SessionMonitor from './Components/SessionMonitor';
 import AdminDashboard from './admin/AdminDashboard'; // Import Admin Dashboard
 import ManageEvents from './admin/ManageEvents';     // Import Manage Events
 import ManageReports from './admin/ManageReports';   // Import Manage Reports
@@ -17,8 +18,9 @@ import ManageReports from './admin/ManageReports';   // Import Manage Reports
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Routes>
+      <SessionMonitor>
+        <div className="App">
+          <Routes>
           {/* Default route - always show login page */}
           <Route path="/" element={<Login />} />
 
@@ -29,7 +31,7 @@ function App() {
           <Route 
             path="/home" 
             element={
-              <RoleBasedRoute allowedRoles={['user', 'coordinator']}>
+              <RoleBasedRoute allowedRoles={['user', 'coordinator', 'admin']}>
                 <Navbar />
                 <HomePage />
               </RoleBasedRoute>
@@ -108,8 +110,9 @@ function App() {
               </RoleBasedRoute>
             } 
           />
-        </Routes>
-      </div>
+          </Routes>
+        </div>
+      </SessionMonitor>
     </Router>
   );
 }

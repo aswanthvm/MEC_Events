@@ -40,12 +40,46 @@
     gap: 20px;
   }
   
+  /* Session info */
+  .session-info {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid #007bff;
+  }
+
+  .session-info p {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+
+  /* Logout buttons */
+  .logout-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .logout-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .logout-options p {
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
   /* Logout button */
   .btn-logout {
     background-color: #ff6347;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 20px;
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
@@ -54,6 +88,77 @@
   
   .btn-logout:hover {
     background-color: #e5533c; /* Slightly darker on hover */
+  }
+
+  /* Logout all button */
+  .btn-logout-all {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-logout-all:hover {
+    background-color: #c82333;
+  }
+
+  /* Active sessions display */
+  .active-sessions {
+    margin-top: 25px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+  }
+
+  .active-sessions h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    color: #495057;
+  }
+
+  .session-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #e9ecef;
+    font-size: 12px;
+  }
+
+  .session-item.current {
+    background-color: #e3f2fd;
+    border-color: #2196f3;
+  }
+
+  .session-role {
+    font-weight: bold;
+    color: #007bff;
+    text-transform: capitalize;
+  }
+
+  .session-email {
+    color: #6c757d;
+    flex-grow: 1;
+    text-align: center;
+  }
+
+  .session-time {
+    color: #868e96;
+    font-size: 11px;
+  }
+
+  .current-marker {
+    color: #28a745;
+    font-weight: bold;
+    font-size: 11px;
   }
   
   /* Cancel button */

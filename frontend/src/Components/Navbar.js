@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../Assets/meclogo.png';
+import AuthService from '../services/AuthService';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
-  // Check user roles
-  const userRole = localStorage.getItem('userRole');
-  const coordinatorName = localStorage.getItem('coordinatorName');
-  const isAdmin = userRole === 'admin';
-  const isCoordinator = userRole === 'coordinator';
+  // Check user roles using AuthService
+  const userRole = AuthService.getUserRole();
+  const coordinatorName = sessionStorage.getItem('coordinatorName');
+  const isAdmin = AuthService.isAdmin();
+  const isCoordinator = AuthService.isCoordinator();
 
   // Handle scroll effect
   useEffect(() => {
@@ -103,7 +104,7 @@ const Navbar = () => {
                 className={({ isActive }) => `nav-link admin-link ${isActive ? 'active' : ''}`}
                 onClick={closeMobileMenu}
               >
-                <span className="nav-text">Admin</span>
+                <span className="nav-text">Dashboard</span>
               </NavLink>
             </li>
           )}

@@ -1,7 +1,8 @@
 // Login.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Login.css'; // Import your CSS file for styling
 import { useNavigate } from 'react-router-dom';
+import AuthService from '../services/AuthService';
 
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false); // Toggle between login and sign-up
@@ -10,7 +11,19 @@ const Login = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [mobile, setMobile] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  // Check if already authenticated
+  useEffect(() => {
+    if (AuthService.isAuthenticated()) {
+      const role = AuthService.getUserRole();
+      console.log('User already authenticated with role:', role);
+      // Redirect based on role
+      navigate(role === 'admin' ? '/home' : '/home', { replace: true });
+    }
+  }, [navigate]);
 
   // Hardcoded credentials (for demo - should be in database in production)
   const ADMIN_EMAIL = 'admin@mec.ac.in';
@@ -25,55 +38,90 @@ const Login = () => {
     { email: 'coordinator5@mec.ac.in', password: 'coord202', name: 'Coordinator_5' }
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
 
-    if (isSignUp) {
-      // Sign-up form validation
-      if (firstName && lastName && mobile && email && password) {
-        // Here you could also send user data to a server
-        alert('Sign-up successful! Please log in.'); 
-        setIsSignUp(false); // Set back to log-in mode
-        navigate('/login'); // Navigate to login page after sign-up
+    try {
+      if (isSignUp) {
+        // Sign-up form validation
+        if (firstName && lastName && mobile && email && password) {
+          // Here you could also send user data to a server
+          alert('Sign-up successful! Please log in.'); 
+          setIsSignUp(false); // Set back to log-in mode
+          // Clear form fields
+          setFirstName('');
+          setLastName('');
+          setMobile('');
+          setEmail('');
+          setPassword('');
+        } else {
+          setError('Please fill in all fields.');
+        }
       } else {
-        alert('Please fill in all fields.');
-      }
-    } else {
-      // Log-in form validation
-      if (email && password) {
+        // Log-in form validation
+        if (!email || !password) {
+          setError('Please fill in both email and password.');
+          setLoading(false);
+          return;
+        }
+
+        let userRole = null;
+
         // Check for admin credentials
         if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-          localStorage.setItem('isAuthenticated', 'true');
-          localStorage.setItem('userRole', 'admin');
-          localStorage.setItem('userEmail', email);
-          alert('Welcome Admin!');
-          navigate('/admin');
-          return; // Important: return early to prevent further execution
+          userRole = AuthService.setAuthData({
+            role: 'admin',
+            email: email,
+            name: 'Admin'
+          });
+          console.log('Admin login successful');
         }
-        
         // Check for coordinator credentials
-        const coordinator = COORDINATORS.find(coord => 
-          coord.email === email && coord.password === password
-        );
-        
-        if (coordinator) {
-          localStorage.setItem('isAuthenticated', 'true');
-          localStorage.setItem('userRole', 'coordinator');
-          localStorage.setItem('userEmail', email);
-          localStorage.setItem('coordinatorName', coordinator.name);
-          alert(`Welcome ${coordinator.name}!`);
-          navigate('/home');
-          return; // Important: return early to prevent further execution
+        else {
+          const coordinator = COORDINATORS.find(coord => 
+            coord.email === email && coord.password === password
+          );
+          
+          if (coordinator) {
+            userRole = AuthService.setAuthData({
+              role: 'coordinator',
+              email: email,
+              name: coordinator.name,
+              coordinatorName: coordinator.name
+            });
+            console.log('Coordinator login successful:', coordinator.name);
+          }
+          // Regular user login
+          else {
+            userRole = AuthService.setAuthData({
+              role: 'user',
+              email: email,
+              name: 'User'
+            });
+            console.log('User login successful');
+          }
         }
-        
-        // Regular user login (you can add proper authentication here later)
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('userRole', 'user');
-        localStorage.setItem('userEmail', email);
-        navigate('/home');
-      } else {
-        alert('Please fill in both fields.');
+
+        if (userRole) {
+          // Show success message
+          const userName = userRole === 'admin' ? 'Admin' : 
+                          userRole === 'coordinator' ? COORDINATORS.find(c => c.email === email)?.name : 
+                          'User';
+          alert(`Welcome ${userName}!`);
+          
+          // Navigate to home page for all roles
+          navigate('/home', { replace: true });
+        } else {
+          setError('Login failed. Please try again.');
+        }
       }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('An error occurred during login. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -81,6 +129,7 @@ const Login = () => {
     <div className="login-container">
       <div className="login-card">
         <h1>{isSignUp ? 'Sign Up' : 'Log In'}</h1>
+        {error && <div className="error-message" style={{color: 'red', marginBottom: '10px', textAlign: 'center'}}>{error}</div>}
         <form onSubmit={handleSubmit}>
           {isSignUp && (
             <>
@@ -121,7 +170,9 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">{isSignUp ? 'Sign Up' : 'Log In'}</button>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Please wait...' : (isSignUp ? 'Sign Up' : 'Log In')}
+          </button>
         </form>
         <p>
           {isSignUp
