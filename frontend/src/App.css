@@ -1,5 +1,18 @@
+/* Default scrolling behavior for the entire app */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+  scroll-behavior: smooth; /* Enable smooth scrolling */
+}
+
+/* Only the login page will override these with its own styles via the login-page class */
+
 .App {
   text-align: center;
+  min-height: 100vh;
 }
 
 .App-logo {

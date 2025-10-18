@@ -15,14 +15,22 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Check if already authenticated
+  // Check if already authenticated and manage body class
   useEffect(() => {
+    // Add login-page class when component mounts
+    document.body.classList.add('login-page');
+
     if (AuthService.isAuthenticated()) {
       const role = AuthService.getUserRole();
       console.log('User already authenticated with role:', role);
       // Redirect based on role
       navigate(role === 'admin' ? '/home' : '/home', { replace: true });
     }
+
+    // Remove login-page class when component unmounts
+    return () => {
+      document.body.classList.remove('login-page');
+    };
   }, [navigate]);
 
   // Hardcoded credentials (for demo - should be in database in production)
