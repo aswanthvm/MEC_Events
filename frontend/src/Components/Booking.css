@@ -3,52 +3,45 @@
 
 .bookings-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f8fafc;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.bookings-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
 }
 
 /* Header Section */
 .bookings-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  text-align: center;
-  padding: 80px 20px 60px;
-  position: relative;
-  overflow: hidden;
-}
-
-.bookings-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-  z-index: 1;
+  background: #ffffff;
+  color: #1a202c;
+  text-align: left;
+  padding: 40px 0 30px;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .header-content {
-  position: relative;
-  z-index: 2;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
 }
 
 .bookings-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 800;
-  margin: 0 0 20px 0;
-  text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
-  letter-spacing: -0.02em;
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  color: #1a202c;
+  letter-spacing: -0.01em;
 }
 
 .bookings-subtitle {
-  font-size: 1.2rem;
-  opacity: 0.9;
+  font-size: 0.95rem;
+  color: #4a5568;
   font-weight: 400;
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .bookings-container {
@@ -57,22 +50,63 @@
   padding: 25px;
 }
 
-.bookings-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 25px;
-  margin-top: 0;
+.table-responsive {
+  overflow-x: auto;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-top: 25px;
 }
 
-.booking-card {
+.bookings-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
   background: white;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  font-size: 0.9rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.bookings-table thead {
+  background: #f8f9fa;
+}
+
+.bookings-table th {
+  padding: 14px 20px;
   text-align: left;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #dee2e6;
+  color: #1a202c;
+  white-space: nowrap;
+  background: #f8f9fa;
+}
+
+.bookings-table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #4a5568;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.bookings-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.bookings-table tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+.bookings-table tbody tr:hover {
+  background-color: #edf2f7;
+}
+
+.bookings-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .booking-card::before {
@@ -197,18 +231,36 @@
   .bookings-container {
     padding: 15px;
   }
-  
-  .bookings-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+
+  .bookings-table {
+    font-size: 0.85rem;
   }
-  
-  .booking-card-content {
-    padding: 20px;
+
+  .bookings-table thead {
+    display: none;
   }
-  
-  .booking-event-title,
-  .booking-card h3 {
-    font-size: 1.2rem;
+
+  .bookings-table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #667eea;
+  }
+
+  .bookings-table tbody td {
+    display: block;
+    text-align: right;
+    padding: 12px 15px;
+  }
+
+  .bookings-table tbody td:before {
+    content: attr(data-label);
+    float: left;
+    font-weight: 600;
+    color: #667eea;
+  }
+
+  .table-responsive {
+    border-radius: 10px;
+    margin-top: 15px;
   }
 }

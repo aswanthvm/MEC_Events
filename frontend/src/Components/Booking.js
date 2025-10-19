@@ -22,29 +22,39 @@ const Booking = () => {
       <div className="bookings-header">
         <div className="header-content">
           <h1 className="bookings-title">Event Bookings</h1>
-          <p className="bookings-subtitle">View all event registrations and participant details</p>
         </div>
       </div>
 
       {/* Bookings Container */}
       <div className="bookings-container">
         {bookings.length > 0 ? (
-          <div className="bookings-grid">
-            {bookings.map((booking) => (
-              <div key={booking._id} className="booking-card">
-                <div className="booking-card-content">
-                  <h3 className="booking-event-title">{booking.eventTitle}</h3>
-                  <div className="booking-info">
-                    <p><i className="fas fa-calendar-alt"></i> <strong>Date:</strong> {new Date(booking.eventDate).toDateString()}</p>
-                    <p><i className="fas fa-user"></i> <strong>Name:</strong> {booking.name}</p>
-                    <p><i className="fas fa-id-card"></i> <strong>Student ID:</strong> {booking.studentId}</p>
-                    <p><i className="fas fa-graduation-cap"></i> <strong>Department:</strong> {booking.department}</p>
-                    <p><i className="fas fa-envelope"></i> <strong>Email:</strong> {booking.email}</p>
-                    <p><i className="fas fa-phone"></i> <strong>Phone:</strong> {booking.phone}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="table-responsive">
+            <table className="bookings-table">
+              <thead>
+                <tr>
+                  <th>Event Title</th>
+                  <th>Date</th>
+                  <th>Name</th>
+                  <th>Student ID</th>
+                  <th>Department</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bookings.map((booking) => (
+                  <tr key={booking._id}>
+                    <td data-label="Event">{booking.eventTitle}</td>
+                    <td data-label="Date">{new Date(booking.eventDate).toLocaleDateString()}</td>
+                    <td data-label="Name">{booking.name}</td>
+                    <td data-label="ID">{booking.studentId}</td>
+                    <td data-label="Dept">{booking.department}</td>
+                    <td data-label="Email">{booking.email}</td>
+                    <td data-label="Phone">{booking.phone}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         ) : (
           <div className="no-bookings">
