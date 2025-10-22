@@ -24,6 +24,16 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET total number of bookings
+router.get('/count/total', async (req, res) => {
+  try {
+    const count = await Booking.countDocuments();
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ message: 'Error counting bookings' });
+  }
+});
+
 // POST a new booking
 router.post('/', async (req, res) => {
   try {

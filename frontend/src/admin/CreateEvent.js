@@ -1,7 +1,7 @@
-// src/admin/CreateEvent.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import ImageUploader from './ImageUploader';
+import './CreateEvent.css';
 
 const CreateEvent = () => {
   const [title, setTitle] = useState('');
@@ -131,16 +131,16 @@ const CreateEvent = () => {
   };
 
   return (
-    <div style={{ maxWidth: '450px', margin: '0 auto', padding: '15px' }}>
-      <h2 style={{ fontSize: '1.4rem', marginBottom: '1rem' }}>Create New Event</h2>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+    <div className="create-event-container">
+      <h2 className="create-event-title">Create New Event</h2>
+      <form onSubmit={handleSubmit} className="create-event-form">
         <input 
           type="text" 
           placeholder="Event Title" 
           value={title} 
           onChange={(e) => setTitle(e.target.value)} 
           required 
-          style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '14px' }}
+          className="form-input"
         />
         
         <input 
@@ -149,13 +149,13 @@ const CreateEvent = () => {
           value={date} 
           onChange={(e) => setDate(e.target.value)} 
           required 
-          style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '14px' }}
+          className="form-input"
         />
         
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '14px' }}
+          className="form-input form-select"
         >
           <option value="">Select Category (Optional)</option>
           {availableCategories.map(cat => (
@@ -168,7 +168,7 @@ const CreateEvent = () => {
           placeholder="Prize Pool (e.g., ₹10,000)" 
           value={prize} 
           onChange={(e) => setPrize(e.target.value)} 
-          style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '14px' }}
+          className="form-input"
         />
         
         <textarea 
@@ -176,50 +176,29 @@ const CreateEvent = () => {
           value={description} 
           onChange={(e) => setDescription(e.target.value)} 
           required 
-          rows="3"
-          style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #ccc', resize: 'vertical', fontSize: '14px', lineHeight: '1.4' }}
+          className="form-input form-textarea"
         />
         
-        <div>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', fontSize: '14px' }}>
-            Event Image {uploading && <span style={{ color: 'orange' }}>(Uploading...)</span>}
+        <div className="image-section">
+          <label className="image-section-label">
+            Event Image {uploading && <span style={{ color: '#f59e0b' }}>(Uploading...)</span>}
           </label>
           
           {/* Tab buttons */}
-          <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+          <div className="image-tabs">
             <button 
               type="button" 
               onClick={() => setImageInputMode('url')}
-              style={{
-                flex: 1,
-                padding: '8px 12px',
-                border: imageInputMode === 'url' ? '2px solid #667eea' : '2px solid #e2e8f0',
-                background: imageInputMode === 'url' ? '#667eea' : '#f8f9fa',
-                color: imageInputMode === 'url' ? 'white' : '#4a5568',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontSize: '12px',
-                fontWeight: '500'
-              }}
+              className={`image-tab-button ${imageInputMode === 'url' ? 'active' : ''}`}
             >
-              🔗 Image URL
+              Image URL
             </button>
             <button 
               type="button" 
               onClick={handleFileInputClick}
-              style={{
-                flex: 1,
-                padding: '8px 12px',
-                border: imageInputMode === 'file' ? '2px solid #667eea' : '2px solid #e2e8f0',
-                background: imageInputMode === 'file' ? '#667eea' : '#f8f9fa',
-                color: imageInputMode === 'file' ? 'white' : '#4a5568',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontSize: '12px',
-                fontWeight: '500'
-              }}
+              className={`image-tab-button ${imageInputMode === 'file' ? 'active' : ''}`}
             >
-              📁 Upload File
+              Upload File
             </button>
           </div>
           
@@ -230,17 +209,9 @@ const CreateEvent = () => {
                 placeholder="Enter image URL (e.g., https://example.com/image.jpg)" 
                 value={image && image.startsWith('http') ? image : ''} 
                 onChange={handleUrlChange}
-                style={{ 
-                  padding: '8px 12px', 
-                  borderRadius: '6px', 
-                  border: '2px solid #e2e8f0', 
-                  fontSize: '14px',
-                  width: '100%',
-                  boxSizing: 'border-box',
-                  background: '#fafafa'
-                }}
+                className="form-input"
               />
-              <small style={{ color: '#666', fontSize: '12px', display: 'block', marginTop: '4px' }}>
+              <small className="helper-text">
                 Paste a direct link to an image
               </small>
             </div>
@@ -257,45 +228,28 @@ const CreateEvent = () => {
           {/* Image Preview */}
           {image && !uploading && (
             <div>
-              <p style={{ color: 'green', fontSize: '12px', marginTop: '8px' }}>
-                ✅ Image {image.startsWith('http') ? 'URL' : 'file'} added successfully
+              <p className="success-text">
+                ✓ Image {image.startsWith('http') ? 'URL' : 'file'} added successfully
               </p>
               {image && (
-                <div style={{ textAlign: 'center', marginTop: '8px' }}>
+                <div className="image-preview">
                   <img 
                     src={image} 
                     alt="Preview" 
-                    style={{ 
-                      maxWidth: '200px', 
-                      maxHeight: '150px', 
-                      borderRadius: '6px',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                      objectFit: 'cover'
-                    }}
                     onError={(e) => {
                       e.target.style.display = 'none';
                       e.target.nextSibling.style.display = 'block';
                     }}
                   />
-                  <div style={{ display: 'none', color: 'red', fontSize: '12px', marginTop: '4px' }}>
-                    ❌ Invalid image URL
+                  <div className="error-text" style={{ display: 'none' }}>
+                    Invalid image URL
                   </div>
                   <button 
                     type="button" 
                     onClick={() => setImage('')}
-                    style={{
-                      display: 'block',
-                      margin: '8px auto 0',
-                      padding: '4px 8px',
-                      background: '#ff4757',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      fontSize: '11px',
-                      cursor: 'pointer'
-                    }}
+                    className="image-remove-button"
                   >
-                    ✕ Remove
+                    Remove
                   </button>
                 </div>
               )}
@@ -306,17 +260,7 @@ const CreateEvent = () => {
         <button 
           type="submit" 
           disabled={uploading}
-          style={{ 
-            padding: '10px 16px', 
-            backgroundColor: uploading ? '#ccc' : '#007bff', 
-            color: 'white', 
-            border: 'none', 
-            borderRadius: '6px', 
-            fontSize: '14px',
-            fontWeight: '500',
-            cursor: uploading ? 'not-allowed' : 'pointer',
-            marginTop: '8px'
-          }}
+          className="submit-button"
         >
           {uploading ? 'Uploading Image...' : 'Create Event'}
         </button>

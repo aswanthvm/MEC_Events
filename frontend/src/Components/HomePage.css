@@ -255,6 +255,9 @@ body {
   position: relative;
   overflow: hidden;
   height: 250px;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .event-image {
@@ -264,8 +267,12 @@ body {
   transition: transform 0.4s ease;
 }
 
-.event-card:hover .event-image {
+.event-image-container:hover .event-image {
   transform: scale(1.1);
+}
+
+.event-image-container:hover .event-overlay {
+  opacity: 1;
 }
 
 .event-overlay {
@@ -332,12 +339,18 @@ body {
   font-weight: 500;
 }
 
+.event-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
 .event-button {
+  flex: 1;
   display: inline-flex;
   align-items: center;
-  padding: 12px 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  justify-content: center;
+  padding: 10px 20px;
   text-decoration: none;
   border-radius: 25px;
   font-weight: 600;
@@ -345,11 +358,38 @@ body {
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #1a365d;
+}
+
+.event-button.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+}
+
+.event-button.register {
+  background: #38a169;
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
 }
 
 .event-button:hover {
   transform: translateY(-2px);
+}
+
+.event-button.primary:hover {
   box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.event-button.register:hover {
+  box-shadow: 0 10px 20px rgba(56, 161, 105, 0.3);
+}
+
+.event-button:not(.primary):not(.register):hover {
+  border-color: #2c4c7c;
+  background: #f8fafc;
+  box-shadow: 0 4px 8px rgba(26, 54, 93, 0.1);
 }
 
 

@@ -13,7 +13,6 @@ const EventList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
   const [sortBy, setSortBy] = useState('date');
-  const [fullscreenImage, setFullscreenImage] = useState(null);
   
   // Customizable categories - can be managed by admin
   const [categories, setCategories] = useState(['all', 'Technical', 'Cultural', 'Sports', 'Academic', 'Workshop', 'Competition']);
@@ -51,18 +50,14 @@ const EventList = () => {
   // Handle keyboard events for fullscreen image
   useEffect(() => {
     const handleKeyPress = (e) => {
-      if (e.key === 'Escape') {
-        if (fullscreenImage) {
-          setFullscreenImage(null);
-        } else if (selectedEvent) {
-          handleCloseModal();
-        }
+      if (e.key === 'Escape' && selectedEvent) {
+        handleCloseModal();
       }
     };
 
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [fullscreenImage, selectedEvent]);
+  }, [selectedEvent]);
 
   // Filter and sort events (upcoming first, closed last)
   const filteredAndSortedEvents = events
@@ -119,25 +114,15 @@ const EventList = () => {
   // Handle closing the modal
   const handleCloseModal = () => {
     setSelectedEvent(null); // Clear selected event to close modal
-    setFullscreenImage(null); // Close fullscreen image if open
   };
 
-  // Handle image click for fullscreen view
+  // Handle image click for event details
   const handleImageClick = (e, event) => {
     e.stopPropagation();
-    setFullscreenImage({
-      src: event.image || 'https://via.placeholder.com/800x600/667eea/ffffff?text=Event+Image',
-      alt: event.title,
-      title: event.title
-    });
+    handleViewDetails(event);
   };
 
-  // Handle fullscreen close
-  const handleFullscreenClose = (e) => {
-    if (e.target === e.currentTarget) {
-      setFullscreenImage(null);
-    }
-  };
+
 
   // Handle opening the registration form
   const handleRegisterClick = () => {
@@ -311,7 +296,7 @@ const EventList = () => {
                     alt={event.title}
                     className="event-image clickable-image"
                     onError={(e) => e.target.src = 'https://via.placeholder.com/400x400/667eea/ffffff?text=Event+Image'}
-                    title="Click to view full size"
+                    title="Click to view event details"
                   />
                   <div className="event-overlay">
                   </div>
@@ -330,13 +315,34 @@ const EventList = () => {
                     <span className="date-icon">📅</span>
                     {formatDate(event.date)}
                   </div>
+
+                  {event.venue && (
+                    <div className="event-location">
+                      <span className="location-icon">📍</span>
+                      {event.venue}
+                    </div>
+                  )}
+                  
+                  {event.capacity && (
+                    <div className="event-capacity">
+                      <span className="capacity-icon">👥</span>
+                      {event.capacity} seats
+                    </div>
+                  )}
                   
                   <p className="event-description">
-                    {event.description?.length > 100 
-                      ? `${event.description.substring(0, 100)}...` 
+                    {event.description?.length > 150 
+                      ? `${event.description.substring(0, 150)}...` 
                       : event.description
                     }
                   </p>
+
+                  {event.prize && (
+                    <div className="event-prize">
+                      <span className="prize-icon">🏆</span>
+                      Prize: {event.prize}
+                    </div>
+                  )}
                   
                   <div className="event-actions">
                     <button 
@@ -401,7 +407,7 @@ const EventList = () => {
                 <h2 className="modal-title">{selectedEvent.title}</h2>
                 
                 <div className="modal-info-grid">
-                  <div className="info-item">
+                  <div className="info-item date-time">
                     <span className="info-icon">📅</span>
                     <div>
                       <strong>Date & Time</strong>
@@ -443,6 +449,38 @@ const EventList = () => {
                 <div className="description-section">
                   <h4>About This Event</h4>
                   <p>{selectedEvent.description}</p>
+                  
+                  {selectedEvent.highlights && (
+                    <div className="event-highlights-section">
+                      <h4>Event Highlights</h4>
+                      <ul className="highlights-list">
+                        {selectedEvent.highlights.map((highlight, index) => (
+                          <li key={index}>✨ {highlight}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {selectedEvent.requirements && (
+                    <div className="requirements-section">
+                      <h4>Requirements</h4>
+                      <ul className="requirements-list">
+                        {selectedEvent.requirements.map((req, index) => (
+                          <li key={index}>📋 {req}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  {selectedEvent.coordinator && (
+                    <div className="coordinator-section">
+                      <h4>Event Coordinator</h4>
+                      <div className="coordinator-info">
+                        <span className="coordinator-icon">👤</span>
+                        <p>{selectedEvent.coordinator}</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 
                 <div className="modal-actions">
@@ -476,30 +514,7 @@ const EventList = () => {
         />
       )}
 
-      {/* Fullscreen Image Viewer */}
-      {fullscreenImage && (
-        <div className="fullscreen-image-overlay" onClick={handleFullscreenClose}>
-          <div className="fullscreen-image-container">
-            <button 
-              className="fullscreen-close-btn" 
-              onClick={() => setFullscreenImage(null)}
-              title="Close (ESC)"
-            >
-              ✕
-            </button>
-            <img
-              src={fullscreenImage.src}
-              alt={fullscreenImage.alt}
-              className="fullscreen-image"
-              onClick={(e) => e.stopPropagation()}
-              onError={(e) => e.target.src = 'https://via.placeholder.com/800x600/667eea/ffffff?text=Event+Image'}
-            />
-            <div className="fullscreen-image-title">
-              {fullscreenImage.title}
-            </div>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 };

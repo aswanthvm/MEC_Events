@@ -1,22 +1,34 @@
-// src/admin/AdminDashboard.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './AdminDashboard.css';
+import { FaCalendarAlt, FaChartBar } from 'react-icons/fa';
 
 const AdminDashboard = () => {
   return (
     <div className="dashboard-container">
-      <h1>🎯 Admin Dashboard</h1>
+      <div className="dashboard-header">
+        <h1>Administration Panel</h1>
+        <p className="dashboard-subtitle">Manage college events and generate reports</p>
+      </div>
+
       <div className="dashboard-cards">
         <Link to="/manage-events" className="dashboard-card">
-          <i className="fas fa-calendar-alt"></i>
-          <h2>Manage Events</h2>
-          <p>Create, edit, and organize college events. Upload images, set dates, and track event details with our comprehensive event management system.</p>
+          <div className="card-icon">
+            <FaCalendarAlt />
+          </div>
+          <div className="card-content">
+            <h2>Event Management</h2>
+            <p>Create and manage events, track registrations, and handle event logistics efficiently.</p>
+          </div>
         </Link>
         <Link to="/manage-reports" className="dashboard-card">
-          <i className="fas fa-chart-bar"></i>
-          <h2>Manage Reports</h2>
-          <p>Generate detailed reports for events including attendance rates, feedback scores, and performance analytics to improve future events.</p>
+          <div className="card-icon">
+            <FaChartBar />
+          </div>
+          <div className="card-content">
+            <h2>Reports & Analytics</h2>
+            <p>Access comprehensive reports, analyze event performance, and track attendance statistics.</p>
+          </div>
         </Link>
       </div>
     </div>

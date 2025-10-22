@@ -115,6 +115,24 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET count of active users
+router.get('/count/active', async (req, res) => {
+  try {
+    const count = await User.countDocuments({ isActive: true });
+    res.json({
+      success: true,
+      count
+    });
+  } catch (error) {
+    console.error('Count users error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error counting users',
+      error: error.message
+    });
+  }
+});
+
 // Get user by ID
 router.get('/:id', async (req, res) => {
   try {

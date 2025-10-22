@@ -14,6 +14,7 @@ import SessionMonitor from './Components/SessionMonitor';
 import AdminDashboard from './admin/AdminDashboard'; // Import Admin Dashboard
 import ManageEvents from './admin/ManageEvents';     // Import Manage Events
 import ManageReports from './admin/ManageReports';   // Import Manage Reports
+import EventDetails from './Components/EventDetails';   // Import Event Details
 
 function App() {
   return (
@@ -46,6 +47,16 @@ function App() {
                 <EventList />
               </RoleBasedRoute>
             } 
+          />
+
+          <Route
+            path="/events/:id"
+            element={
+              <RoleBasedRoute>
+                <Navbar />
+                <EventDetails />
+              </RoleBasedRoute>
+            }
           />
 
           <Route 

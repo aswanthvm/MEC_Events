@@ -1,5 +1,6 @@
 // HomePage.js
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './HomePage.css'; // Import the CSS for HomePage styling
 import bgvideo from '../Assets/bgvideo.mp4';
@@ -66,7 +67,7 @@ const HomePage = () => {
             <h1 className="hero-title">Welcome to MEC Events</h1>
             <p className="hero-subtitle">Discover, manage, and attend events at MEC. Your one-stop platform for all things events.</p>
             <div className="hero-buttons">
-              <a href="/events" className="cta-button primary">Explore Events</a>
+              <Link to="/events" className="cta-button primary">Explore Events</Link>
             </div>
           </div>
           <div className="scroll-indicator">
@@ -91,7 +92,7 @@ const HomePage = () => {
           <div className="events-cards">
             {upcomingEvents.map((event, index) => (
               <div key={event._id} className="event-card animate-on-scroll" style={{ animationDelay: `${index * 0.2}s` }}>
-                <div className="event-image-container">
+                <Link to={`/events/${event._id}`} className="event-image-container">
                   <img 
                     src={event.image || 'https://via.placeholder.com/400x250/667eea/ffffff?text=Event+Image'} 
                     alt={event.title} 
@@ -110,7 +111,7 @@ const HomePage = () => {
                       })}
                     </div>
                   </div>
-                </div>
+                </Link>
                 <div className="event-info">
                   <h3>{event.title}</h3>
                   <p className="event-description">
@@ -122,7 +123,10 @@ const HomePage = () => {
                     {event.category && <span className="tag">{event.category}</span>}
                     {event.prize && <span className="tag prize">Prize: {event.prize}</span>}
                   </div>
-                  <a href="/events" className="event-button">View Details</a>
+                  <div className="event-buttons">
+                    <Link to={`/events/${event._id}`} className="event-button primary">View Details</Link>
+                    <Link to={`/booking/${event._id}`} className="event-button register">Register</Link>
+                  </div>
                 </div>
               </div>
             ))}
@@ -132,7 +136,7 @@ const HomePage = () => {
             <div className="no-events-icon">📅</div>
             <h3>No Upcoming Events</h3>
             <p>There are no upcoming events at the moment. Check back soon for exciting new events!</p>
-            <a href="/events" className="cta-button primary">View All Events</a>
+            <Link to="/events" className="cta-button primary">View All Events</Link>
           </div>
         )}
       </section>

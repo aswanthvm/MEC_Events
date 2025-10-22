@@ -52,6 +52,48 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET a single event by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+    if (!event) {
+      return res.status(404).json({ error: 'Event not found' });
+    }
+    res.status(200).json(event);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching event' });
+  }
+});
+
+// GET count of active events
+router.get('/count/active', async (req, res) => {
+  try {
+    const count = await Event.countDocuments({ date: { $gte: new Date() } });
+    res.status(200).json({ count });
+  } catch (error) {
+    res.status(500).json({ error: 'Error counting active events' });
+  }
+});
+
+// GET count of events this month
+router.get('/count/monthly', async (req, res) => {
+  try {
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    
+    const count = await Event.countDocuments({
+      date: { 
+        $gte: startOfMonth,
+        $lte: endOfMonth
+      }
+    });
+    res.status(200).json({ count });
+  } catch (error) {
+    res.status(500).json({ error: 'Error counting monthly events' });
+  }
+});
+
 // Test endpoint to check upload functionality
 router.get('/test-upload', (req, res) => {
   const uploadsPath = path.join(__dirname, '..', 'uploads');
