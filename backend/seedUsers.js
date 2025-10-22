@@ -8,43 +8,59 @@ async function seedUsers() {
     await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/college-events');
     console.log('Connected to MongoDB');
 
-    // Clear existing users (optional - comment out if you want to keep existing users)
-    // await User.deleteMany({});
-    // console.log('Cleared existing users');
+    // Clear all existing users from the database
+    await User.deleteMany({});
+    console.log('Cleared existing users');
 
-    // Default users
+    // Create default admin and coordinator users
     const defaultUsers = [
       {
         firstName: 'System',
         lastName: 'Administrator',
-        email: 'admin@vcet.edu',
+        email: 'admin@mec.ac.in',
         password: 'admin123',
         mobile: '9876543210',
         role: 'admin'
       },
       {
         firstName: 'Event',
-        lastName: 'Coordinator',
-        email: 'coordinator@vcet.edu',
+        lastName: 'Coordinator1',
+        email: 'coordinator1@mec.ac.in',
         password: 'coord123',
         mobile: '9876543211',
         role: 'coordinator'
       },
       {
-        firstName: 'John',
-        lastName: 'Student',
-        email: 'john.student@vcet.edu',
-        password: 'student123',
+        firstName: 'Event',
+        lastName: 'Coordinator2',
+        email: 'coordinator2@mec.ac.in',
+        password: 'coord456',
         mobile: '9876543212',
-        role: 'user'
+        role: 'coordinator'
       },
       {
-        firstName: 'Jane',
-        lastName: 'Smith',
-        email: 'jane.smith@vcet.edu',
-        password: 'student123',
+        firstName: 'Event',
+        lastName: 'Coordinator3',
+        email: 'coordinator3@mec.ac.in',
+        password: 'coord789',
         mobile: '9876543213',
-        role: 'user'
+        role: 'coordinator'
+      },
+      {
+        firstName: 'Event',
+        lastName: 'Coordinator4',
+        email: 'coordinator4@mec.ac.in',
+        password: 'coord101',
+        mobile: '9876543214',
+        role: 'coordinator'
+      },
+      {
+        firstName: 'Event',
+        lastName: 'Coordinator5',
+        email: 'coordinator5@mec.ac.in',
+        password: 'coord202',
+        mobile: '9876543215',
+        role: 'coordinator'
       }
     ];
 
@@ -60,11 +76,8 @@ async function seedUsers() {
       }
     }
 
-    console.log('\n✅ User seeding completed successfully!');
-    console.log('\nDefault login credentials:');
-    console.log('Admin: admin@vcet.edu / admin123');
-    console.log('Coordinator: coordinator@vcet.edu / coord123');
-    console.log('Student: john.student@vcet.edu / student123');
+    console.log('\n✅ Database cleared successfully!');
+    console.log('\nAll users have been removed. New users can register through the signup form.');
     
   } catch (error) {
     console.error('Error seeding users:', error);
