@@ -11,6 +11,8 @@ const Login = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [mobile, setMobile] = useState('');
+  const [studentId, setStudentId] = useState('');
+  const [department, setDepartment] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -34,17 +36,7 @@ const Login = () => {
   }, [navigate]);
 
   // Hardcoded credentials (for demo - should be in database in production)
-  const ADMIN_EMAIL = 'admin@mec.ac.in';
-  const ADMIN_PASSWORD = 'admin123';
-  
-  // Multiple coordinator accounts
-  const COORDINATORS = [
-    { email: 'coordinator1@mec.ac.in', password: 'coord123', name: 'Coordinator_1' },
-    { email: 'coordinator2@mec.ac.in', password: 'coord456', name: 'Coordinator_2' },
-    { email: 'coordinator3@mec.ac.in', password: 'coord789', name: 'Coordinator_3' },
-    { email: 'coordinator4@mec.ac.in', password: 'coord101', name: 'Coordinator_4' },
-    { email: 'coordinator5@mec.ac.in', password: 'coord202', name: 'Coordinator_5' }
-  ];
+  // Note: auth and registration are handled by the backend via AuthService
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,15 +47,43 @@ const Login = () => {
       if (isSignUp) {
         // Sign-up form validation
         if (firstName && lastName && mobile && email && password) {
-          // Here you could also send user data to a server
-          alert('Sign-up successful! Please log in.'); 
-          setIsSignUp(false); // Set back to log-in mode
-          // Clear form fields
-          setFirstName('');
-          setLastName('');
-          setMobile('');
-          setEmail('');
-          setPassword('');
+          // Send registration request to backend
+          try {
+            const registerData = {
+              firstName: firstName.trim(),
+              lastName: lastName.trim(),
+              mobile: mobile.trim(),
+              studentId: studentId.trim(),
+              department: department.trim(),
+              email: email.trim().toLowerCase(),
+              password: password
+            };
+
+            const res = await AuthService.register(registerData);
+            // AuthService.register throws on failure, so if we reach here it's OK
+            setIsSignUp(false); // switch to login mode
+            setError('');
+            // Optionally auto-login after signup
+            try {
+              await AuthService.login(registerData.email, registerData.password);
+              navigate('/home', { replace: true });
+              return;
+            } catch (loginAfterRegisterErr) {
+              // Registration succeeded but auto-login failed; ask user to login manually
+              setError('Registration successful. Please log in.');
+            }
+          } catch (regErr) {
+            console.error('Registration error:', regErr);
+            setError(regErr.message || 'Registration failed.');
+          } finally {
+            // Clear sensitive fields but keep email for convenience
+            setPassword('');
+            setFirstName('');
+            setLastName('');
+            setMobile('');
+            setStudentId('');
+            setDepartment('');
+          }
         } else {
           setError('Please fill in all fields.');
         }
@@ -75,54 +95,13 @@ const Login = () => {
           return;
         }
 
-        let userRole = null;
-
-        // Check for admin credentials
-        if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-          userRole = AuthService.setAuthData({
-            role: 'admin',
-            email: email,
-            name: 'Admin'
-          });
-          console.log('Admin login successful');
-        }
-        // Check for coordinator credentials
-        else {
-          const coordinator = COORDINATORS.find(coord => 
-            coord.email === email && coord.password === password
-          );
-          
-          if (coordinator) {
-            userRole = AuthService.setAuthData({
-              role: 'coordinator',
-              email: email,
-              name: coordinator.name,
-              coordinatorName: coordinator.name
-            });
-            console.log('Coordinator login successful:', coordinator.name);
-          }
-          // Regular user login
-          else {
-            userRole = AuthService.setAuthData({
-              role: 'user',
-              email: email,
-              name: 'User'
-            });
-            console.log('User login successful');
-          }
-        }
-
-        if (userRole) {
-          // Show success message
-          const userName = userRole === 'admin' ? 'Admin' : 
-                          userRole === 'coordinator' ? COORDINATORS.find(c => c.email === email)?.name : 
-                          'User';
-          alert(`Welcome ${userName}!`);
-          
-          // Navigate to home page for all roles
+        try {
+          const data = await AuthService.login(email.trim().toLowerCase(), password);
+          // AuthService.login sets session data on success
           navigate('/home', { replace: true });
-        } else {
-          setError('Login failed. Please try again.');
+        } catch (loginErr) {
+          console.error('Login failed:', loginErr);
+          setError(loginErr.message || 'Login failed. Please check your credentials.');
         }
       }
     } catch (error) {
@@ -161,6 +140,18 @@ const Login = () => {
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
                 required
+              />
+              <input
+                type="text"
+                placeholder="Student ID"
+                value={studentId}
+                onChange={(e) => setStudentId(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Department"
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
               />
             </>
           )}

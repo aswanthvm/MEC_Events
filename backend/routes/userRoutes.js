@@ -5,7 +5,7 @@ const User = require('../models/User');
 // Register a new user
 router.post('/register', async (req, res) => {
   try {
-    const { firstName, lastName, email, password, mobile, role } = req.body;
+    const { firstName, lastName, email, password, mobile, role, studentId, department } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -23,7 +23,9 @@ router.post('/register', async (req, res) => {
       email,
       password, // In production, this should be hashed
       mobile,
-      role: role || 'user' // Default to 'user' if no role specified
+      role: role || 'user', // Default to 'user' if no role specified
+      studentId: studentId || '',
+      department: department || ''
     });
 
     await user.save();
@@ -37,7 +39,9 @@ router.post('/register', async (req, res) => {
         lastName: user.lastName,
         email: user.email,
         mobile: user.mobile,
-        role: user.role
+        role: user.role,
+        studentId: user.studentId,
+        department: user.department
       }
     });
 
@@ -195,6 +199,32 @@ router.put('/:id/role', async (req, res) => {
       message: 'Error updating user role',
       error: error.message
     });
+  }
+});
+
+// Update user profile (name, mobile, studentId, department)
+router.put('/:id', async (req, res) => {
+  try {
+    const { firstName, lastName, mobile, studentId, department } = req.body;
+
+    const update = {};
+    if (firstName !== undefined) update.firstName = firstName;
+    if (lastName !== undefined) update.lastName = lastName;
+    if (mobile !== undefined) update.mobile = mobile;
+    if (studentId !== undefined) update.studentId = studentId;
+    if (department !== undefined) update.department = department;
+    update.updatedAt = Date.now();
+
+    const user = await User.findByIdAndUpdate(req.params.id, update, { new: true });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    res.json({ success: true, message: 'Profile updated', user });
+  } catch (error) {
+    console.error('Update profile error:', error);
+    res.status(500).json({ success: false, message: 'Error updating profile', error: error.message });
   }
 });
 

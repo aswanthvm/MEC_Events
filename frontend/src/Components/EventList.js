@@ -222,7 +222,7 @@ const EventList = () => {
           <div className="search-box">
             <input
               type="text"
-              placeholder="🔍 Search events..."
+              placeholder=" Search events..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
@@ -339,7 +339,7 @@ const EventList = () => {
 
                   {event.prize && (
                     <div className="event-prize">
-                      <span className="prize-icon">🏆</span>
+                      <span className="prize-icon"></span>
                       Prize: {event.prize}
                     </div>
                   )}
@@ -349,7 +349,7 @@ const EventList = () => {
                       className="event-button primary" 
                       onClick={() => handleViewDetails(event)}
                     >
-                      📖 View Details
+                       View Details
                     </button>
                     <button 
                       className={`event-button ${isEventUpcoming(event.date) ? 'register' : 'disabled'}`}
@@ -361,7 +361,7 @@ const EventList = () => {
                       }}
                       disabled={!isEventUpcoming(event.date)}
                     >
-                      {isEventUpcoming(event.date) ? '✨ Register' : '📋 Closed'}
+                      {isEventUpcoming(event.date) ? ' Register' : ' Closed'}
                     </button>
                   </div>
                 </div>
@@ -491,11 +491,11 @@ const EventList = () => {
                         setIsFormOpen(true);
                       }}
                     >
-                      ✨ Register for Event
+                       Register for Event
                     </button>
                   ) : (
                     <div className="past-event-notice">
-                      <span>📋 This event has ended</span>
+                      <span> This event has ended</span>
                     </div>
                   )}
                 </div>

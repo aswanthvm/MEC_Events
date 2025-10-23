@@ -17,6 +17,8 @@ const ManageReports = () => {
   const [reports, setReports] = useState([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingReport, setEditingReport] = useState(null);
+  const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState('');
   const [backendStatus, setBackendStatus] = useState('checking'); // 'checking', 'connected', 'disconnected'
   const [newReport, setNewReport] = useState({ 
     eventName: '', 
@@ -44,7 +46,7 @@ const ManageReports = () => {
 
   const testBackendConnection = async () => {
     try {
-      console.log('🔍 Testing backend connection...');
+      console.log(' Testing backend connection...');
       
       // Test main server health
       const healthResponse = await axios.get('http://localhost:5000/api/health', { timeout: 5000 });
@@ -93,10 +95,13 @@ const ManageReports = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setCreateError('');
+    setCreating(true);
     
     // Client-side validation
     if (!newReport.eventName.trim() || !newReport.date || !newReport.location.trim() || !newReport.coordinator.trim()) {
       alert('Please fill in all required fields: Event Name, Date, Location, and Coordinator');
+      setCreating(false);
       return;
     }
 
@@ -168,7 +173,13 @@ const ManageReports = () => {
         console.error('Request setup error:', error.message);
       }
       
+      setCreateError(errorMessage);
       alert(errorMessage);
+      setCreating(false);
+    }
+    finally {
+      // ensure creating is cleared if not already
+      setCreating(false);
     }
   };
 
@@ -293,10 +304,10 @@ const ManageReports = () => {
     <div className="manage-reports">
       <div className="reports-header">
         <div className="header-title">
-          <h2>📊 Event Reports Dashboard</h2>
+          <h2> Event Reports Dashboard</h2>
           <div className={`status-indicator ${backendStatus}`}>
             {backendStatus === 'checking' && '🔄 Checking connection...'}
-            {backendStatus === 'connected' && '✅ Backend Connected'}
+            {backendStatus === 'connected' && ' Backend Connected'}
             {backendStatus === 'disconnected' && '❌ Backend Disconnected'}
           </div>
         </div>
@@ -312,21 +323,21 @@ const ManageReports = () => {
             onClick={handleMigration}
             title="Clean up old reports that don't match current format"
           >
-            🧹 Clean Data
+             Clean Data
           </button>
           <button 
             className="migrate-btn danger-btn"
             onClick={handleResetCollection}
             title="⚠️ DANGER: Reset entire reports database - This will delete ALL reports!"
           >
-            🔄 Reset DB
+             Reset DB
           </button>
           <button 
             className="migrate-btn info-btn"
             onClick={() => window.open('http://localhost:5000/api/health', '_blank')}
             title="Test backend API connection"
           >
-            🔍 Test API
+             Test API
           </button>
         </div>
       </div>
@@ -471,13 +482,18 @@ const ManageReports = () => {
               </div>
 
               <div className="form-actions">
-                <button type="submit" className="submit-btn">
-                  {editingReport ? '✅ Update Report' : '🚀 Create Report'}
+                <button type="submit" className="submit-btn" disabled={creating}>
+                  {creating ? '⏳ Saving...' : (editingReport ? '✅ Update Report' : '🚀 Create Report')}
                 </button>
                 <button type="button" className="cancel-btn" onClick={resetForm}>
                   ❌ Cancel
                 </button>
               </div>
+              {createError && (
+                <div style={{ marginTop: '10px', color: '#c53030' }}>
+                  <strong>Error:</strong> {createError}
+                </div>
+              )}
             </form>
           </div>
         </div>

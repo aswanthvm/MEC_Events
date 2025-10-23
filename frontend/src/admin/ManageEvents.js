@@ -297,7 +297,7 @@ const ManageEvents = () => {
                   setImagePreview(imageFile ? URL.createObjectURL(imageFile) : '');
                 }}
               >
-                📁 Upload File
+                 Upload File
               </button>
               <button 
                 type="button" 
@@ -307,7 +307,7 @@ const ManageEvents = () => {
                   setImagePreview(image);
                 }}
               >
-                🔗 Use URL
+                 Use URL
               </button>
             </div>
             
@@ -323,7 +323,7 @@ const ManageEvents = () => {
                 <small>Supported: PNG, JPG, JPEG, GIF (Max 5MB)</small>
                 <div className="paste-instruction">
                   <small style={{ color: '#007bff', fontWeight: 'bold' }}>
-                    💡 Tip: You can also paste images directly using Ctrl+V
+                     Tip: You can also paste images directly
                   </small>
                 </div>
                 {uploading && <p className="uploading-text">Processing image...</p>}
@@ -399,13 +399,13 @@ const ManageEvents = () => {
             <p>{event.description}</p>
             <div className="event-buttons">
               <button onClick={() => handleEdit(event)} className="edit-button">
-                ✏️ Edit
+                 Edit
               </button>
               <button onClick={() => handleDelete(event._id)} className="delete-button">
-                🗑️ Delete
+                 Delete
               </button>
               <button onClick={() => handleGetData(event._id)} className="data-button">
-                📊 Get Data
+                 Get Data
               </button>
             </div>
           </li>
@@ -441,7 +441,7 @@ const ManageEvents = () => {
                     />
                     <div className="paste-instruction">
                       <small style={{ color: '#007bff', fontWeight: 'bold' }}>
-                        💡 Tip: You can also paste images directly using Ctrl+V
+                         Tip: You can also paste images directly
                       </small>
                     </div>
                     {uploading && <p className="uploading-text">Uploading...</p>}
